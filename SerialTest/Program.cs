@@ -17,11 +17,15 @@ namespace SerialTest
             serial.NewLine = "\n";
             serial.DtrEnable = true;
 
+            int tx = 0;
+            DateTime start = DateTime.Now;
+
             int cnt = 0;
             while (Console.KeyAvailable == false)
             {
                 string data = String.Format("{0}: ", cnt).PadRight(packet_length - 1, 'A');
                 Console.WriteLine("Sending {0} bytes:", data.Length + serial.NewLine.Length);
+                tx += data.Length + serial.NewLine.Length;
                 serial.WriteLine(data);
                 try
                 {
@@ -34,6 +38,7 @@ namespace SerialTest
                 }
                 cnt++;
             }
+            Console.WriteLine("Data rate: {0} KB/s", tx / (DateTime.Now - start).TotalMilliseconds);
         }
     }
 }
