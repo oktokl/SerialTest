@@ -7,7 +7,10 @@ namespace SerialTest
     {
         static void Main(string[] args)
         {
-            SerialPort serial = new SerialPort("COM18");
+            string port = args[0];
+            int packet_length = int.Parse(args[1]);
+
+            SerialPort serial = new SerialPort(args[0]);
             serial.Open();
 
             serial.ReadTimeout = 1000;
@@ -17,7 +20,7 @@ namespace SerialTest
             int cnt = 0;
             while (Console.KeyAvailable == false)
             {
-                string data = String.Format("{0}: ", cnt).PadRight(64, 'A');
+                string data = String.Format("{0}: ", cnt).PadRight(packet_length - 1, 'A');
                 Console.WriteLine("Sending {0} bytes:", data.Length + serial.NewLine.Length);
                 serial.WriteLine(data);
                 try
